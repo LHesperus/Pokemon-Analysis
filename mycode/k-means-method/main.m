@@ -2,13 +2,14 @@ clear; clc; close all;
 
 
 %% paramter
-k=20;
+k=100;
 
-%%
+%% train
 img_path = './train/';
 img_dir = dir([img_path,'*CP*']);
 img_num = length(img_dir);
-
+n_train=img_num;
+% 
 ID_gt = zeros(img_num,1);
 
 %% 
@@ -31,21 +32,22 @@ save('model.mat','ID_gt','IDx_feature','IDy_feature');
 
 
 %% Recognition
+model=load('model.mat');
 img_path = './val/';
 img_dir = dir([img_path,'*CP*']);
 img_num = length(img_dir);
+ID_val=zeros(img_num,1);
 
-n=10;
-pic_val=imread([img_path,img_dir(n).name]);
-[xx,yy]=ID_ExtractFeature([img_path,img_dir(n).name],k);
-B=zeros(k,2);
-B(1:length(xx),1)=xx;
-B(1:length(yy),2)=yy;
-A=[IDx_feature(1,:)' IDy_feature(1,:)'];
-%for ii=1:img_num
-   Idx= knnsearch(A,B);
-   A=A(Idx,1)+j*A(Idx,2);
-   B=B(:,1)+j*B(:,2);
-   F=(A-B).^2;
-  % F=sum(abs(F));
-%end
+
+for ii=1:img_num
+    name = img_dir(ii).name;
+    ul_idx = strfind(name,'_'); 
+    ID_val_theory(ii) = str2double(name(1:ul_idx(1)-1));
+end
+
+for ii=1:img_num
+    ii
+     ID_val(ii)=ID_recongnition([img_path,img_dir(ii).name],k,model,n_train);
+end
+
+aa=sum(ID_val==ID_val_theory')

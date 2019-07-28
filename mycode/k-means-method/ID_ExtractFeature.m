@@ -6,7 +6,11 @@ pic = imresize(pic,[1780 1070]);
 % get pic size
 x=size(pic,1);
 y=size(pic,2);
-pic_1 = imcrop(pic,[0.15*x 0.25*y 0.3*x 0.45*y]);%cut
+%xy=[0.10*x 0.16*y 0.4*x 0.55*y];
+xy=[0.15*x 0.25*y 0.3*x 0.45*y];  %high 44/139
+%xy=[0.10*x 0.20*y 0.4*x 0.50*y]; % 38/139
+%xy=[0.20*x 0.30*y 0.2*x 0.40*y];  %36/139
+pic_1 = imcrop(pic,xy);%cut
 %%   SURF
 RGB = pic_1;
 if length(size(RGB))>=3  % avoid RGB gray imag
@@ -14,7 +18,13 @@ if length(size(RGB))>=3  % avoid RGB gray imag
 else
     I=RGB;
 end
+
+%edge
+I=edge(I, 'Canny');
 points = detectSURFFeatures(I);
+%points = detectHarrisFeatures(I);
+%points=detectMSERFeatures(I);
+%points=detectKAZEFeatures(I);
 %% Harris
 % corners = detectHarrisFeatures(I);
 % figure
