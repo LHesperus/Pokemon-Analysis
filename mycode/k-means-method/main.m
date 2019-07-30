@@ -28,11 +28,11 @@ for ii=1:img_num
     IDx_feature(ii,1:length(xx))=xx;
     IDy_feature(ii,1:length(yy))=yy;
 end
-save('model.mat','ID_gt','IDx_feature','IDy_feature');
+save('id_model.mat','ID_gt','IDx_feature','IDy_feature');
 
 
 %% Recognition
-model=load('model.mat');
+model=load('id_model.mat');
 img_path = './val/';
 img_dir = dir([img_path,'*CP*']);
 img_num = length(img_dir);
@@ -48,6 +48,7 @@ end
 for ii=1:img_num
     ii
      ID_val(ii)=ID_recongnition([img_path,img_dir(ii).name],k,model,n_train);
+    [ID_val_theory(ii) ID_val(ii)]
 end
 
 aa=sum(ID_val==ID_val_theory')
