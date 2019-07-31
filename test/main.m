@@ -8,7 +8,7 @@ close all
 k=100;
 
 %% resize imag
-pic = imread('001_CP13_HP10_SD200_6259_10.png');
+pic = imread('007_CP132_HP28_SD600_8071_9.png');
 figure
 imshow(pic);
 pic = imresize(pic,[1780 1070]);
@@ -17,10 +17,10 @@ imshow(pic);
 %% cut imag
 
 % get pic size
-x=size(pic,1);
-y=size(pic,2);
+x=size(pic,2);
+y=size(pic,1);
 
-pic_1 = imcrop(pic,[0.15*x 0.25*y 0.3*x 0.45*y]);%cut
+pic_1 = imcrop(pic,[0.30*x 0.16*y 0.4*x 0.24*y]);%cut
 
 figure,imshow(pic_1);
 imwrite(pic_1,'1.png');
@@ -29,9 +29,18 @@ imwrite(pic_1,'1.png');
 RGB = imread('1.png');
 imshow(RGB)
 I = rgb2gray(RGB);% to gray
+
+
 figure
 imshow(I)
+
+% edge
+% I=edge(I, 'Canny');  % 'Roberts'  'Sobel'  'Prewitt' 'LOG' 'Canny'
+% figure ;imshow(I)
+
 points = detectSURFFeatures(I);
+%points=detectMSERFeatures(I);
+%points=detectKAZEFeatures(I);
 hold on
 %plot(points.selectStrongest(n));
 plot(points.Location(:,1),points.Location(:,2),'o');
@@ -46,7 +55,7 @@ plot(points.Location(:,1),points.Location(:,2),'o');
 X=points.Location;
 [idx,C] = kmeans(X,k);
 hold on
-plot(C(:,1),C(:,2),'kx', 'MarkerSize',15,'LineWidth',3)
+plot(C(:,1),C(:,2),'x', 'MarkerSize',15,'LineWidth',3)
 k_freq=sum(idx==(1:k));
 
 %% save data
